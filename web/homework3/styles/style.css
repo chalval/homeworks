@@ -1,0 +1,38 @@
+html {
+    font-size: 20px; /* px значит 'пиксели': базовый шрифт */
+    line-height: 1;
+    background-color: #b3a795;
+    font-family: 'Roboto', sans-serif;
+    }
+body {
+    width: 600px;
+    margin: 20px 100px;
+    background-color: #d6e393;
+    padding: 0 20px 20px 20px;
+    border: 5px solid rgb(169, 203, 243);
+    }
+p { 
+    text-indent: 30px;
+    text-align: justify;
+}
+uuu {color: #3e23c7;}
+li {text-align: center;}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    padding: 20px 0;
+    text-shadow: 2px 2px 3px rgb(145, 95, 95);
+    }
+h2 {
+    color: crimson;
+    text-align: center;
+    margin: 0;
+    padding: 20px 0;
+    }
+img {
+    display: block;
+    margin: 0 auto;
+    }
+
+        
