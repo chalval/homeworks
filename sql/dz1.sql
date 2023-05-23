@@ -7,7 +7,7 @@ CREATE TABLE mobil
 (id INT PRIMARY KEY NOT NULL,
 model VARCHAR(30) NOT NULL,
 producer VARCHAR(30) NOT NULL,
-price INT NOT NULL,
+price DECIMAL(9, 2) NOT NULL,
 amount INT NOT NULL
 );
 INSERT mobil(id, model, producer, price, amount)
