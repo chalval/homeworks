@@ -38,13 +38,13 @@ VALUES
 	('e04', 9.5, 'CANCELLED');
 SELECT * FROM orders;
 SELECT *,
-    CASE 
+	CASE 
 		WHEN order_status = "OPEN" THEN "Order is in open state"
-        WHEN order_status = "CLOSED" THEN "Order is closed"
-        WHEN order_status = "CANCELLED" THEN "Order is cancelled"
-    ELSE "Статус не определен"
-    END AS full_order_status
-    FROM orders;
+		WHEN order_status = "CLOSED" THEN "Order is closed"
+		WHEN order_status = "CANCELLED" THEN "Order is cancelled"
+	ELSE "Статус не определен"
+	END AS full_order_status
+	FROM orders;
 
 -- Task4. Чем NULL отличается от 0?
 -- NULL - это специальное значение, которое используется в SQL для обозначения отсутствия данных. 
