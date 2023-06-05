@@ -10,10 +10,10 @@ count_product INT NOT NULL);
 INSERT INTO sales (order_date, count_product)
 VALUES
 	('2022-01-01', 156),
-    ('2022-01-02', 180),
-    ('2022-01-03', 21),
-    ('2022-01-04', 124),
-    ('2022-01-05', 341);
+	('2022-01-02', 180),
+	('2022-01-03', 21),
+	('2022-01-04', 124),
+	('2022-01-05', 341);
 SELECT * FROM sales;
 
 -- Task2. Сгруппируйте значений количества в 3 сегмента — меньше 100, 100-300 и больше 300 (функция IF)
@@ -32,10 +32,10 @@ order_status VARCHAR(20) NOT NULL);
 INSERT INTO orders (employee_id, amount, order_status)
 VALUES
 	('e03', 15, 'OPEN'),
-    ('e01', 25.5, 'OPEN'),
-    ('e05', 100.7, 'CLOSED'),
-    ('e02', 22.18, 'OPEN'),
-    ('e04', 9.5, 'CANCELLED');
+	('e01', 25.5, 'OPEN'),
+	('e05', 100.7, 'CLOSED'),
+	('e02', 22.18, 'OPEN'),
+	('e04', 9.5, 'CANCELLED');
 SELECT * FROM orders;
 SELECT *,
     CASE 
