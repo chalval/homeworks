@@ -1,52 +1,50 @@
-import logging
-import sys
+import torch
+import torch.nn as nn
+from transformers import BertModel, BertTokenizer
 
-logging.basicConfig(filename='transpose.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
+# Класс модели
+class DialogModel(nn.Module):
+    def __init__(self, tokenizer):
+        super().__init__()
 
-def transpose(matrix):
-    transposed_matrix = []
-    try:
-        for i in range(len(matrix[0])):
-            tt = []
-            for j in range(len(matrix)):
-                tt.append(matrix[j][i])
-            transposed_matrix.append(tt)
+        # BERT Encoder
+        self.encoder = BertModel.from_pretrained('bert-base-cased')
+        self.proj = nn.Linear(768, 512)
 
-        # запись полезной информации в лог-файл
-        logging.debug('Матрица успешно транспонирована')
-    except Exception as e:
-        # запись ошибки в лог-файл
-        logging.error(f'Ошибка при транспонировании матрицы: {e}')
+        # Transformer Decoder
+        self.decoder = nn.TransformerDecoder(
+            nn.TransformerDecoderLayer(d_model=512, nhead=8),
+            num_layers=6
+        )
+        self.attention = nn.MultiheadAttention(512, 8)
 
-    return transposed_matrix
+        # Декодер токенов для генерации текста
+        self.out = nn.Linear(512, tokenizer.vocab_size)
 
+    def generate(self, x):
+        # Декодируем токены
+        out_tokens = self.out(x).argmax(-1)
 
-if __name__ == '__main__':
-    # проверка наличия переданных параметров
-    if len(sys.argv) > 1:
-        # первый параметр - имя файла с матрицей, остальные параметры (если есть) - значения элементов матрицы
-        filename = sys.argv[1]
-        matrix = []
+        # Преобразуем токены в текст
+        return tokenizer.decode(out_tokens)
 
-        try:
-            # чтение матрицы из файла
-            with open(filename, 'r') as f:
-                for line in f.readlines():
-                    matrix.append([int(x) for x in line.split()])
+    def forward(self, input_ids, attention_mask):
+        x = self.encoder(input_ids, attention_mask)[0]
+        x = self.proj(x)
+        x = self.attention(x, x, x)[0]
+        x = self.decoder(x, x)
 
-            # транспонирование матрицы
-            transposed_matrix = transpose(matrix)
+        return self.generate(x) # генерация ответа
 
-            # вывод результата
-            print('Транспонированная матрица:')
-            for row in transposed_matrix:
-                print(row)
-        except Exception as e:
-            # запись ошибки в лог-файл
-            logging.error(f'Ошибка при чтении матрицы из файла: {e}')
-    else:
-        print('Необходимо передать имя файла с матрицей в качестве параметра командной строки')
+# Создаем токенайзер
+tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
 
+# Инициализируем модель
+model = DialogModel(tokenizer)
 
-# python dz15.py matrix.txt
+text = "Hello!"
+inputs = tokenizer(text, return_tensors="pt")
+output = model(inputs["input_ids"], inputs["attention_mask"])
+
+print(output)
 
